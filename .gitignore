@@ -5,3 +5,4 @@ Release/
 *.obj
 *.exe
 *.pdb
+*.vcxproj.user
