@@ -20,7 +20,7 @@ double radToDeg(double rad) {
 }
 
 double degToRad(double deg) {
-	return deg * M_PI * 180;
+	return deg * M_PI / 180;
 }
 
 // inv a = tan a - a ;
@@ -54,6 +54,23 @@ double calcToothThicknessHalfAngle(int z, double x, double alpha_deg, double alp
 double calcToothTipThickness(double phsi, double d_a) {
 	return phsi * d_a;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
