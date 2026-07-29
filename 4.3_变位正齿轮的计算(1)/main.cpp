@@ -18,7 +18,7 @@ double inv(double alpha_deg) {
 	return tan(degToRad(alpha_deg)) - degToRad(alpha_deg);
 }
 
-// 啮合压力角的渐开线函数 inva~
+// 啮合压力角的渐开线函数 inva'
 double calcInvMeshingPressureAngle(double alpha_deg, double x1, double x2, double z1, double z2) {
 	double alpha_rad = degToRad(alpha_deg);
 	return 2 * tan(alpha_rad) * ((x1 + x2) / (z1 + z2)) + inv(alpha_deg);

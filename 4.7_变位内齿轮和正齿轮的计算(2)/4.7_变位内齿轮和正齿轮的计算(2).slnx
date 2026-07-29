@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="4.4_变位齿轮计算(2).vcxproj" Id="a227e7ad-0800-45cb-bf87-1f71cd9f2b0d" />
+  <Project Path="4.7_变位内齿轮和正齿轮的计算(2).vcxproj" />
 </Solution>
