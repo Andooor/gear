@@ -6,3 +6,6 @@ Release/
 *.exe
 *.pdb
 *.vcxproj.user
+*.slnx
+*.vcxproj
+*.vcxproj.filters
