@@ -68,7 +68,6 @@ int main() {
 	double alpha_n_deg = 20;
 	double beta_deg = 30;
 	double z1 = 12, z2 = 60;
-	double x_n1 = 0.09809, x_n2 = 0;
 	double a = 125;
 
 	double alpha_t_deg = calcEndFacePressureAngle(alpha_n_deg, beta_deg);
