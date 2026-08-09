@@ -6,9 +6,10 @@
 using namespace std;
 
 /*
+	端面压力角		End Face pressure angle 
 	分度圆直径		pitch circle diameter
 	分度锥角		dividing cone angle
-	大端锥距		Large pitch cone
+	锥距			Cone distance
 	齿宽			tooth width
 	大端齿顶高		Large end tooth top height
 	齿根高			Tooth root height
@@ -55,13 +56,21 @@ double invInverse(const double n) {
 }
 
 
+// 端面压力角		End Face pressure angle 
+double calcEndFacePressureAngle(const double alpha_n_deg, const double beta_deg) {
+	double alpha_n_rad = degToRad(alpha_n_deg);
+	double beta_rad = degToRad(beta_deg);
+	double tmp = atan(tan(alpha_n_rad) / cos(beta_rad));
+	return radToDeg(tmp);
+}
+
 // 分度圆直径	pitch circle diameter
 double calcPitchCircleDiameter(const double z, const double m) {
 	return z * m;
 }
 
 // 分度锥角		dividing cone angle
-double* calcDividingConeAngle(const double sigma_deg, const double z1, const double z2){
+double* calcDividingConeAngle(const double sigma_deg, const double z1, const double z2) {
 	double sigma_rad = degToRad(sigma_deg);
 	double delta1_rad = atan(sin(sigma_rad) / (z2 / z1 + cos(sigma_rad)));
 	double delta2_rad = sigma_rad - delta1_rad;
@@ -69,41 +78,41 @@ double* calcDividingConeAngle(const double sigma_deg, const double z1, const dou
 	return delta;
 }
 
-// 大段锥距		Large pitch cone
-double calcLargePitchCone(const double d2, const double delta2_deg){
+// 锥距		Large pitch cone distance
+double calcLargePitchCone(const double d2, const double delta2_deg) {
 	double delta2_rad = degToRad(delta2_deg);
 	return d2 / 2 / sin(delta2_rad);
 }
 
 // 齿宽			tooth width
-double calcToothWidth(double R){
-	return floor(R / 3);
+double calcToothWidth(double R) {
+	return floor(0.3 * R);
 }
 
 // 大端齿顶高		Large end tooth top height
-double* calcLargeEndToothTopHeight(const double m, const double z1, const double z2, const double delta1_deg, const double delta2_deg){
+double* calcLargeEndToothTopHeight(const double m, const double z1, const double z2, const double delta1_deg, const double delta2_deg) {
 	double delta1_rad = degToRad(delta1_deg);
 	double delta2_rad = degToRad(delta2_deg);
-	double h_a2 = 0.540 * m + 0.460 * m * z1 * cos(delta2_rad) / z2 / cos(delta1_rad);
-	double h_a1 = 2 * m - h_a2;
+	double h_a2 = 0.460 * m + 0.390 * m * z1 * cos(delta2_rad) / z2 / cos(delta1_rad);
+	double h_a1 = 1.700 * m - h_a2;
 	double* h_a = new double[2] {h_a1, h_a2};
 	return h_a;
 }
 
 // 齿根高			Tooth root height
-double calcToothRootHeight(const double m, const double h_a){
-	return 2.188 * m - h_a;
+double calcToothRootHeight(const double m, const double h_a) {
+	return 1.888 * m - h_a;
 }
 
 // 齿根角			Tooth root angle
-double calcToothRootAngle(const double h_f, const double R){
+double calcToothRootAngle(const double h_f, const double R) {
 	double theta_f_rad = atan(h_f / R);
 	return radToDeg(theta_f_rad);
 }
 
 // 齿顶角			tip angle
 double* calcTipAngle(const double theta_f1_deg, const double theta_f2_deg) {
-	double* theta_a = new double[2]{theta_f2_deg, theta_f1_deg};
+	double* theta_a = new double[2] {theta_f2_deg, theta_f1_deg};
 	return theta_a;
 }
 
@@ -123,20 +132,20 @@ double calcLargeEndToothTipCircleDiameter(const double d, const double h_a, cons
 }
 
 // 冠顶距	Crown distance
-double calcCrownDistance(const double R, const double h_a, const double delta_deg){
+double calcCrownDistance(const double R, const double h_a, const double delta_deg) {
 	double delta_rad = degToRad(delta_deg);
 	return R * cos(delta_rad) - h_a * sin(delta_rad);
 }
 
 // 齿顶间轴向距	Axial distance between tooth tips
-double calcAxialDistanceBetweenToothTips(const double b, const double delta_a_deg, const double theta_a_deg){
+double calcAxialDistanceBetweenToothTips(const double b, const double delta_a_deg, const double theta_a_deg) {
 	double delta_a_rad = degToRad(delta_a_deg);
 	double theta_a_rad = degToRad(theta_a_deg);
 	return b * cos(delta_a_rad) / cos(theta_a_rad);
 }
 
 // 小端齿顶圆直径	Small end tooth tip circle diameter
-double calcSmallEndToothTipCircleDiameter(const double d_a, const double b, const double delta_a_deg, const double theta_a_deg){
+double calcSmallEndToothTipCircleDiameter(const double d_a, const double b, const double delta_a_deg, const double theta_a_deg) {
 	double delta_a_rad = degToRad(delta_a_deg);
 	double theta_a_rad = degToRad(theta_a_deg);
 	return d_a - 2 * b * sin(delta_a_rad) / cos(theta_a_rad);
@@ -146,11 +155,14 @@ void print(const string name, const double value) {
 	cout << left << setw(16) << name << " = " << value << endl;
 }
 
-int main() {
+int main() {	
 	double sigma_deg = 90;
 	double m = 3;
-	double alpha_deg = 20;
+	double alpha_n_deg = 20;
+	double beta_m_deg = 35;
 	double z1 = 20, z2 = 40;
+
+	double alpha_t_deg = calcEndFacePressureAngle(alpha_n_deg, beta_m_deg);
 
 	double d1 = calcPitchCircleDiameter(z1, m);
 	double d2 = calcPitchCircleDiameter(z2, m);
@@ -171,14 +183,14 @@ int main() {
 
 	double theta_f1_deg = calcToothRootAngle(h_f1, R);
 	double theta_f2_deg = calcToothRootAngle(h_f2, R);
-	
+
 	double* theta_a_deg = calcTipAngle(theta_f1_deg, theta_f2_deg);
 	double theta_a1_deg = theta_a_deg[0];
 	double theta_a2_deg = theta_a_deg[1];
-	
+
 	double delta_a1_deg = calcTopConeAngle(delta1_deg, theta_a1_deg);
 	double delta_a2_deg = calcTopConeAngle(delta2_deg, theta_a2_deg);
-	
+
 	double delta_f1_deg = calcRootConeAngle(delta1_deg, theta_f1_deg);
 	double delta_f2_deg = calcRootConeAngle(delta2_deg, theta_f2_deg);
 
@@ -195,7 +207,7 @@ int main() {
 	double d_i2 = calcSmallEndToothTipCircleDiameter(d_a2, b, delta_a2_deg, theta_a2_deg);
 
 
-
+	print("alpha_t_deg", alpha_t_deg);
 	print("d1", d1);
 	print("d2", d2);
 	print("delta1_deg", delta1_deg);
